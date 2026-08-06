@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SIC Metam Sodio · Montelíbano</title>
+<meta name="description" content="Evaluación de campo para aplicación de Metam Sodio — Previo, Durante y Post (guía QM_G-036)." />
+<link rel="icon" href="data:," />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============ Sidebar (desktop) / top bar (mobile) ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="brand-text">
+        <strong>SIC Metam Sodio</strong>
+        <span>Montelíbano · Temporada 26-27</span>
+      </div>
+    </div>
+    <div class="sync-status" id="syncStatus" title="Estado de sincronización">
+      <span class="dot"></span><span class="txt">Conectando…</span>
+    </div>
+  </header>
+
+  <nav class="tabbar" aria-label="Navegación principal">
+    <button class="tab-btn is-active" data-view="nueva">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Nueva evaluación</span>
+    </button>
+    <button class="tab-btn" data-view="historial">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span>Historial</span>
+    </button>
+    <button class="tab-btn" data-view="lotes">
+      <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+      <span>Lotes</span>
+    </button>
+    <button class="tab-btn" data-view="tablero">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20V10M12 20V4M20 20v-7"/></svg>
+      <span>Tablero</span>
+    </button>
+    <button class="tab-btn" data-view="gerencia">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>
+      <span>Gerencia</span>
+    </button>
+    <button class="tab-btn" data-view="config">
+      <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+      <span>Configuración</span>
+    </button>
+  </nav>
+
+  <main id="view" class="view" aria-live="polite"></main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</div>
+
+<!-- Exportación: SheetJS (Excel) y jsPDF + autotable (PDF) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<script src="js/data.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/localdb.js"></script>
+<script src="js/api.js"></script>
+<script src="js/img-utils.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/export-xlsx.js"></script>
+<script src="js/export-pdf.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
