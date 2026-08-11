@@ -6,3 +6,15 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+# El service worker NUNCA debe cachearse en el CDN: así los teléfonos siempre
+# reciben la versión más reciente y detectan las actualizaciones.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "no-cache"

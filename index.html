@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>SIC Metam Sodio · Montelíbano</title>
 <meta name="description" content="Evaluación de campo para aplicación de Metam Sodio — Previo, Durante y Post (guía QM_G-036)." />
-<link rel="icon" href="data:," />
+<link rel="icon" href="icons/favicon.png" />
+<!-- ===== PWA: instalable y offline ===== -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#2F4B3C" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="SIC Metam Sodio" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -75,5 +83,63 @@
 <script src="js/export-xlsx.js"></script>
 <script src="js/export-pdf.js"></script>
 <script src="js/app.js"></script>
+
+<!-- ===== PWA: registro del service worker + aviso de nueva versión ===== -->
+<script>
+(function () {
+  if (!("serviceWorker" in navigator)) return;
+
+  // Banner "hay una versión nueva", se muestra solo cuando corresponde.
+  function mostrarAvisoActualizacion(nuevoSW) {
+    if (document.getElementById("pwa-update-banner")) return;
+    var bar = document.createElement("div");
+    bar.id = "pwa-update-banner";
+    bar.style.cssText =
+      "position:fixed;left:0;right:0;bottom:0;z-index:10000;background:#2F4B3C;color:#fff;" +
+      "padding:12px 16px;display:flex;align-items:center;gap:12px;justify-content:center;" +
+      "font-family:Inter,system-ui,sans-serif;font-size:14px;box-shadow:0 -4px 16px rgba(0,0,0,.2)";
+    bar.innerHTML =
+      '<span>Hay una versión nueva de la app disponible.</span>' +
+      '<button id="pwa-update-btn" style="background:#fff;color:#2F4B3C;border:none;padding:8px 16px;' +
+      'border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit">Actualizar ahora</button>';
+    document.body.appendChild(bar);
+    document.getElementById("pwa-update-btn").onclick = function () {
+      if (nuevoSW) nuevoSW.postMessage("SKIP_WAITING");
+      bar.innerHTML = '<span>Actualizando…</span>';
+    };
+  }
+
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").then(function (reg) {
+      // Si ya hay uno esperando al cargar, avisar.
+      if (reg.waiting && navigator.serviceWorker.controller) {
+        mostrarAvisoActualizacion(reg.waiting);
+      }
+      // Detectar cuando se descarga una versión nueva.
+      reg.addEventListener("updatefound", function () {
+        var nuevo = reg.installing;
+        if (!nuevo) return;
+        nuevo.addEventListener("statechange", function () {
+          if (nuevo.state === "installed" && navigator.serviceWorker.controller) {
+            mostrarAvisoActualizacion(nuevo);
+          }
+        });
+      });
+      // Revisar si hay actualización cada vez que la app vuelve al frente.
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") reg.update().catch(function(){});
+      });
+    }).catch(function () { /* sin SW: la app sigue funcionando como web normal */ });
+
+    // Cuando el SW nuevo toma control, recargar una sola vez para aplicar cambios.
+    var recargado = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (recargado) return;
+      recargado = true;
+      window.location.reload();
+    });
+  });
+})();
+</script>
 </body>
 </html>

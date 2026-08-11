@@ -107,6 +107,30 @@ descripciones.
   salir de la app.
 - **En laptop o navegadores sin esa función**: se descarga el PDF normalmente.
 
+## App instalable y offline (PWA)
+
+Una vez desplegada en Netlify (con `https`), la app se puede **instalar en el
+teléfono** como si fuera nativa y **abre y funciona sin señal**:
+
+- En Chrome Android: menú ⋮ → "Agregar a pantalla de inicio" / "Instalar app".
+- En iPhone (Safari): botón Compartir → "Agregar a pantalla de inicio".
+
+El service worker (`sw.js`) guarda el código de la app, las librerías de PDF y
+Excel, y las fuentes, para que todo cargue sin internet. La captura offline ya
+la resolvía IndexedDB + la cola de sincronización; la PWA agrega que **la app
+misma abra sin señal**, no solo que guarde sin señal.
+
+**⚠️ Al publicar una actualización:** cada vez que cambies cualquier archivo
+(`js`, `css`, `index.html`…), **sube el número de `APP_VERSION`** en la parte
+de arriba de `sw.js` (por ejemplo `v1.0.0` → `v1.0.1`). Ese cambio es lo que
+hace que los teléfonos detecten la versión nueva y muestren el aviso
+**"Hay una versión nueva · Actualizar ahora"**. Si no lo subes, algunos
+teléfonos podrían quedarse con la versión vieja en caché.
+
+Los íconos de la app (carpeta `icons/`) se generaron del logo de Gestión de
+Calidad e Inocuidad, igual que en la app de Mecanización, para que las dos
+apps hermanas se reconozcan como parte del mismo sistema SIC.
+
 ## Cuando quieras desplegarlo de verdad
 
 Este mismo paquete incluye `netlify.toml` y `netlify/functions/`, listos
