@@ -66,7 +66,7 @@ const ExportPdf = (() => {
       genRows.push(["Ciclo", r.ciclo || "—", "Historial fitosanitario", r.historial_fitosanitario || "—"]);
       genRows.push(["DAT de aplicación", r.dat_aplicacion !== "" && r.dat_aplicacion != null ? r.dat_aplicacion + " DAT" : "—",
         "Dosis planificada", r.dosis_planificada_lmz ? r.dosis_planificada_lmz + " L/mz" : "—"]);
-      genRows.push(["Responsable de campo", r.responsable || "—", "", ""]);
+      genRows.push(["Responsable de campo", r.responsable || "—", "Turno", r.turno || "—"]);
     }
     if (r.proceso === "durante") {
       genRows.push(["Área evaluada", r.area_evaluada_mz ? r.area_evaluada_mz + " mz" : "—", "Turno", r.turno || "—"]);

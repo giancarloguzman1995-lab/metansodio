@@ -16,7 +16,7 @@
    los teléfonos podrían seguir con la versión vieja en caché.
    ========================================================================= */
 
-const APP_VERSION = "v1.0.0";                 // <-- SUBIR EN CADA ACTUALIZACIÓN
+const APP_VERSION = "v1.0.2";                 // <-- SUBIR EN CADA ACTUALIZACIÓN
 const CACHE_APP = "sic-metam-app-" + APP_VERSION;
 const CACHE_EXT = "sic-metam-ext-" + APP_VERSION;
 

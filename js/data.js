@@ -109,6 +109,7 @@ const PROCESOS = {
       { id: "ut_codigo", label: "UT / Lote", type: "ut", required: true },
       { id: "zona", label: "Zona", type: "text" },
       { id: "finca", label: "Finca", type: "finca" },
+      { id: "turno", label: "Turno", type: "select", options: ["Mañana", "Tarde"], required: true },
       { id: "ciclo", label: "Ciclo de siembra", type: "select", options: ["C1", "C2"] },
       { id: "historial_fitosanitario", label: "Historial fitosanitario del lote", type: "select", options: ["Alto riesgo (Fusarium / nematodos)", "Bajo riesgo"] },
       { id: "dat_aplicacion", label: "DAT respecto al trasplante programado", type: "number", step: "1", tol: "ventana_dat" },
